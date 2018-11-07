@@ -1,0 +1,156 @@
+:root {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Ted Next';
+  font-size: 1.6rem;
+  line-height: 1.4;
+  color: #414042;
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+a.g-white-link {
+  color: white;
+}
+
+a.g-blue-link {
+  color: #00A0B7;
+}
+
+button {
+  font-size: inherit;
+  font-family: inherit;
+}
+
+fieldset {
+  padding: 3rem;
+  margin: 0;
+  border: none;
+  background-color: #FAFBFB;
+  transition: all 150ms;
+  width: 100%;
+}
+fieldset[disabled] {
+  padding: 0;
+  background-color: transparent;  
+}
+fieldset:not([disabled]) input,
+fieldset:not([disabled]) textarea,
+fieldset:not([disabled]) select {
+  background-color: white;
+}
+/* input {
+  border-color: currentColor;
+}
+[disabled] {
+  border-color: transparent;
+} */
+
+img {
+  max-width: 100%;
+}
+
+.material-icons {
+  vertical-align: middle;
+}
+
+.g-container {
+  margin: 0 auto;
+  max-width: 140rem;
+}
+
+/*@media (min-width: 1280px) {
+  .g-container {
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+*/
+.g-container-inner {
+  padding: 2rem;
+}
+
+@media (min-wdith: 600px) {
+ .g-container-inner {
+  padding: 0 4rem;
+ }
+}
+
+@media (min-width: 960px) {
+ .g-container-inner {
+  padding: 0 10rem;
+ } 
+}
+
+.g-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+.g-overlay-tint {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  background-color: rgba(0,0,0,0.5);
+}
+.g-overlay-image {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -2;
+  background-size: cover;
+  background-position: center center;
+}
+
+.g-boxshadow {
+  box-shadow: 0 2px 14px 0 rgba(0,0,0,0.14);
+}
+
+.g-unbutton {
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.g-svg {
+  width: 1.6em;
+  display: inline-block;
+  vertical-align: middle;
+}
+.g-svg svg {
+  display: block;
+}
+.g-svg svg * {
+  fill: currentColor;
+}
+
+.g-helper-txt {
+  color: #D9D9D9;
+  padding-left: 16px;
+  text-transform: Capitalize;
+  padding-left: 0;
+}
