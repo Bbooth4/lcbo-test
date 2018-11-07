@@ -10,7 +10,7 @@ const styles = theme => ({
     flexGrow: 1
   },
   paper: {
-    padding: '1em',
+    padding: '1rem',
     textAlign: 'center',
     background: '#4988ed',
     color: '#fff',
@@ -27,15 +27,16 @@ class Nav extends Component {
     return (
 			<div className={classes.root}>
 				<Grid container spacing={0}>
-					<Grid item xs={3}>
-						<div className={classes.paper}>xs=3</div>
-					</Grid>
-					<Grid item xs={3}>
+					<Grid item xs={12}>
+						<div className={classes.paper}><h3>LCBO Drink Searcher</h3></div>
+          </Grid>
+
+					{/* <Grid item xs={3}>
 						<div className={classes.paper}>xs=3</div>
 					</Grid>
 					<Grid item xs={6}>
 						<div className={classes.paper}>xs=6</div>
-					</Grid>
+					</Grid> */}
 				</Grid>
 			</div>
     )

@@ -5,8 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { getBeverageCollection, getBeverageByLocation } from '../actions/beverages';
 
 import Nav from './general/Nav';
-// import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -46,10 +44,6 @@ const styles = theme => ({
   cell: {
     whiteSpace: 'nowrap',
     verticalAlign: 'center',
-  },
-  addressCell: {
-    whiteSpace: 'wrap',
-    verticalAlign: 'center',
   }
 });
 
@@ -59,8 +53,6 @@ class Home extends Component {
     lng: '',
     today: '',
     product_id: '',
-    hoursOpen: '',
-    hoursClose: '',
     daysOfTheWeek: [
       'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'
     ]
@@ -71,7 +63,7 @@ class Home extends Component {
     const lng = position.coords.longitude;
     const date =  new Date();
     const today = date.getDay();
-    this.setState({lat, lng, today: this.state.daysOfTheWeek[today]}, () => console.log(this.state));
+    this.setState({lat, lng, today: this.state.daysOfTheWeek[today]});
 
     this.props.dispatch(getBeverageCollection());
   };
@@ -79,13 +71,6 @@ class Home extends Component {
   componentDidMount() {
     if (navigator.geolocation) navigator.geolocation.getCurrentPosition(this.showPosition);
     else console.log('Browser does not support geo location');
-  };
-
-  renderTodaysHours = drink => {
-    const { today } = this.state;
-    // Object.entries(drink).forEach(([key, value], i) => {
-    //   if (new RegExp(today).test(key)) this.setState({[key]: value});
-    // });
   };
 
   handleChange = e => {
@@ -96,6 +81,13 @@ class Home extends Component {
       setTimeout(e => this.setState({ product_id: value }), 500);
       this.props.dispatch(getBeverageByLocation({lat, lng, id: e.target.value}));
     };
+  };
+
+  renderTime = drink => {
+    const time = [];
+    drink.toString().split('').reverse()
+    .forEach((e, i) => { if (i === 2) time.push(`${e}:`); else time.push(e); });
+    return time.reverse().join('').replace(',', '');
   };
 
   render() {
@@ -110,7 +102,7 @@ class Home extends Component {
             ref={ref => this.InputLabelRef = ref}
             htmlFor='drink-list'
           >
-            Drinks
+            Select a Drink
           </InputLabel>
           <Select
             value={this.state.product_id}
@@ -131,7 +123,27 @@ class Home extends Component {
           </Select>
         </FormControl>
       </form>
-      <Table className={classes.table}>
+      {
+        !stores || stores.length < 1
+        ? <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell padding='dense' style={{textAlign: 'center'}}><p>No Selection</p></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell className={classes.cell} style={{textAlign: 'center'}}>
+                {
+                  stores && stores.length < 1 && this.state.product_id !== ''
+                  ? 'No inventory is available at any stores near you'
+                  : 'No selection has been made'
+                }
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        : <Table className={classes.table}>
         <TableHead>
           <TableRow>
             <TableCell padding='none' style={{paddingLeft: 10}}>
@@ -140,32 +152,22 @@ class Home extends Component {
             <TableCell padding='dense'><p>Hours Open</p></TableCell>
             <TableCell padding='dense'><p>Parking</p></TableCell>
             <TableCell padding='dense'><p>Inventory</p></TableCell>
-            {/* <TableCell padding='dense'><p>Inventory</p></TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
           {
-            !stores || stores.length < 1
-            ? <TableRow>
-              <TableCell style={{paddingLeft: 10}}></TableCell>
-              <TableCell className={classes.cell}></TableCell>
-              <TableCell className={classes.cell} style={{textAlign: 'center'}}>
-                {
-                  stores && stores.length < 1 && this.state.product_id !== ''
-                  ? 'No inventory is available at any stores new you'
-                  : 'No selection has been made'
-                }
-              </TableCell>
-              <TableCell className={classes.cell}></TableCell>
-            </TableRow>
-            : stores.map(drink => {
+            stores.map(drink => {
               return (
                 <TableRow key={drink.id} id={drink.id}>
                   <TableCell style={{paddingLeft: 10}}>
                     {drink.address_line_1} {drink.address_line_2}, {drink.city}
                   </TableCell>
                   <TableCell className={classes.cell}>
-                    { drink[`${today}_open`] } - { drink[`${today}_close`] }
+                    { 
+                      this.renderTime(drink[`${today}_open`])
+                    } - {
+                      this.renderTime(drink[`${today}_close`])
+                    }
                   </TableCell>
                   <TableCell className={classes.cell}>{
                     drink.has_parking > 0 ? 'Yes' : 'No'
@@ -173,19 +175,18 @@ class Home extends Component {
                   <TableCell className={classes.cell}>{
                     drink.inventory_count > 0 ? 'In Stock' : 'Out of Stock'
                   }</TableCell>
-                  {/* <TableCell className={classes.cell}>.</TableCell> */}
                 </TableRow>
-              )
+                )
+              })
             }
-            )
-          }
-        </TableBody>
-      </Table>
+          </TableBody>
+        </Table>
+      }
     </main>
   };
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
     beverages: Object.values(state.beverages).map(e => e),
     stores: Object.values(state.stores).map(e => e)

@@ -21,15 +21,9 @@ export const getBeverageByLocation = params => {
   if (params.lat && params.lng && params.id) {
     return dispatch => {
       axios.get(
-        'http://localhost:9001/product/stores',
-        {
-          lat: params.lat,
-          long: params.lng,
-          product_id: params.id
-        }
+        `http://localhost:9001/product/stores?lat=${params.lat}&long=${params.lng}&product_id=${params.id}`
       )
       .then(res => {
-        console.log('line 32', res.data.result);
         if (res.data.result) {
           return dispatch({ type: 'LOAD_STORES_WITH_REQUESTED_STOCK', data: res.data.result });
         } else console.log('Failed');

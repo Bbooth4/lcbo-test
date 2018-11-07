@@ -22,13 +22,16 @@ app.get("/products", async (req, res) => {
 });
 
 app.get("/product/stores", async (req, res) => {
+  console.log(
+    req.query, req.params, req.param
+  )
   const result = new Promise((r, rej) => {
     axios.get(
       'http://lcboapi.com/stores',
       {
-        lat: req.query.lat,
-        long: req.query.long,
-        product_id: req.query.product_id
+        lat: req.params.lat,
+        long: req.params.long,
+        product_id: req.params.product_id
       }
     )
     .then(res => r(res.data))
