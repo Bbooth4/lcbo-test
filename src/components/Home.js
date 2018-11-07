@@ -30,9 +30,11 @@ const styles = theme => ({
     width: '100%'
   },
   select: {
-    minWidth: '20rem',
-    padding: '5rem auto',
-    margin: '1rem auto',
+    minWidth: '30rem',
+    padding: 'auto',
+    margin: 'auto',
+    flex: 1,
+
   },
   dropzone: {
     cursor: 'pointer',
@@ -155,6 +157,9 @@ class Home extends Component {
           </TableRow>
         </TableHead>
         <TableBody>
+          { stores.forEach(e => {
+              console.log({ lat: e.latitude, lng: e.longitude })
+            })}
           {
             stores.map(drink => {
               return (

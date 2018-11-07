@@ -15,32 +15,25 @@ app.get("/products", async (req, res) => {
     .catch(err => err);
   });
 
-  result.then(resp => {
-    res.json(resp);
-  })
+  result.then(resp => res.json(resp))
   .catch(err => res.json(err));
 });
 
 app.get("/product/stores", async (req, res) => {
-  console.log(
-    req.query, req.params, req.param
-  )
   const result = new Promise((r, rej) => {
     axios.get(
       'http://lcboapi.com/stores',
       {
-        lat: req.params.lat,
-        long: req.params.long,
-        product_id: req.params.product_id
+        lat: req.query.lat.split('').slice(0, 6).join().replace(/,/g, ''),
+        lon: req.query.long.split('').slice(0, 7).join().replace(/,/g, ''),
+        product_id: req.query.product_id
       }
     )
     .then(res => r(res.data))
     .catch(err => err);
   });
 
-  result.then(resp => {
-    res.json(resp);
-  })
+  result.then(resp => res.json(resp))
   .catch(err => res.json(err));
 });
 
