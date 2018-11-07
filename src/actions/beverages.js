@@ -1,5 +1,4 @@
 import axios from 'axios';
-require('dotenv').config();
 
 // export const getBeverages = params => {
 //   return dispatch => {
@@ -18,18 +17,32 @@ require('dotenv').config();
 //   };
 // };
 
+export const getBeverageByLocation = params => {
+  if (params.lat && params.lng && params.id) {
+    return dispatch => {
+      axios.get(
+        'http://localhost:9001/product/stores',
+        {
+          lat: params.lat,
+          long: params.lng,
+          product_id: params.id
+        }
+      )
+      .then(res => {
+        console.log('line 32', res.data.result);
+        if (res.data.result) {
+          return dispatch({ type: 'LOAD_STORES_WITH_REQUESTED_STOCK', data: res.data.result });
+        } else console.log('Failed');
+      })
+      .catch(err => console.log(err));
+    };
+  } else console.log('Missing param(s)');
+};
+
 export const getBeverageCollection = params => {
-  console.log('line 22');
   return dispatch => {
     axios.get('http://localhost:9001/products')
     .then(res => {
-      console.log('line 26');
-      console.log(res.data.result[0])
-      // Object.keys(res.data.result).map(e => {
-      //   console.log('line 28', res.data[e])
-      //   res.data[e]
-      // })
-
       if (res.data.result) {
         return dispatch({ type: 'LOAD_BEVERAGES', data: res.data.result });
       } else console.log('Failed');
