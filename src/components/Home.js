@@ -33,8 +33,7 @@ const styles = theme => ({
     minWidth: '30rem',
     padding: 'auto',
     margin: 'auto',
-    flex: 1,
-
+    flex: 1
   },
   dropzone: {
     cursor: 'pointer',
